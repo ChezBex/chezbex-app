@@ -40,7 +40,7 @@
   <script>
     async function chargerRecettes() {
       try {
-        const response = await fetch("./data.json", {cache: "no-cache"});
+        const response = await fetch("/data.json", { cache: "no-cache" });
         if (!response.ok) throw new Error("Impossible de charger data.json");
         const data = await response.json();
 
