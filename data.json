@@ -1,0 +1,13 @@
+{
+  "recettes": [
+    {
+      "nom": "Wrap saumon fumé",
+      "rendement": 8,
+      "ingredients": [
+        { "nom": "Wrap", "quantite": 1, "unite": "unité" },
+        { "nom": "Fromage frais", "quantite": 20, "unite": "g" },
+        { "nom": "Saumon fumé", "quantite": 2, "unite": "tranche" }
+      ]
+    }
+  ]
+}
