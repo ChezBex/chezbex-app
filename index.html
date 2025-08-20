@@ -35,28 +35,82 @@
 <body>
   <h1>Chez Bex - Application Traiteur</h1>
   <p>Bienvenue ! Voici la liste de vos recettes et leurs ingrédients :</p>
-  <div id="recettes">Chargement des recettes...</div>
+  <div id="recettes"></div>
 
   <script>
-    async function chargerRecettes() {
-      try {
-        const response = await fetch("/data.json", { cache: "no-cache" });
-        if (!response.ok) throw new Error("Impossible de charger data.json");
-        const data = await response.json();
+    // On intègre les recettes directement dans le script
+    const data = {
+      "recettes": [
+        {
+          "nom": "Wrap saumon fumé",
+          "rendement": 8,
+          "ingredients": [
+            { "nom": "Wrap", "quantite": 1, "unite": "unité" },
+            { "nom": "Fromage frais", "quantite": 20, "unite": "g" },
+            { "nom": "Saumon fumé", "quantite": 2, "unite": "tranche" }
+          ]
+        },
+        {
+          "nom": "Bun's rillettes de thon",
+          "rendement": 25,
+          "ingredients": [
+            { "nom": "Bun", "quantite": 1, "unite": "unité" },
+            { "nom": "Thon en boîte", "quantite": 1, "unite": "boîte (pour 25 buns)" },
+            { "nom": "Fromage frais", "quantite": 10, "unite": "g (par bun)" },
+            { "nom": "Coriandre", "quantite": 1, "unite": "branche" },
+            { "nom": "Persil", "quantite": 1, "unite": "branche" }
+          ]
+        },
+        {
+          "nom": "Brochettes tomates mozza",
+          "rendement": 1,
+          "ingredients": [
+            { "nom": "Pic à brochette", "quantite": 1, "unite": "unité" },
+            { "nom": "Tomate cerise", "quantite": 1, "unite": "unité" },
+            { "nom": "Mozzarella (bille)", "quantite": 1, "unite": "unité" },
+            { "nom": "Framboise", "quantite": 1, "unite": "unité" }
+          ]
+        },
+        {
+          "nom": "Navettes magret fumé",
+          "rendement": 1,
+          "ingredients": [
+            { "nom": "Navette", "quantite": 1, "unite": "unité" },
+            { "nom": "Fromage frais", "quantite": 2, "unite": "g" },
+            { "nom": "Magret de canard fumé", "quantite": 1, "unite": "tranche" }
+          ]
+        },
+        {
+          "nom": "Tartare saumon avocat",
+          "rendement": 1,
+          "ingredients": [
+            { "nom": "Saumon frais", "quantite": 100, "unite": "g" },
+            { "nom": "Avocat", "quantite": 0.25, "unite": "unité" },
+            { "nom": "Coriandre", "quantite": 1, "unite": "branche" },
+            { "nom": "Sauce soja", "quantite": 1, "unite": "filet" }
+          ]
+        }
+      ]
+    };
 
-        const container = document.getElementById("recettes");
-        container.innerHTML = ""; // on vide "Chargement..."
+    // Affichage dans la page
+    const container = document.getElementById("recettes");
+    container.innerHTML = "";
 
-        data.recettes.forEach(recette => {
-          const div = document.createElement("div");
-          div.className = "recette";
-          div.innerHTML = `
-            <h2>${recette.nom}</h2>
-            <p><strong>Rendement :</strong> ${recette.rendement} portion(s)</p>
-            <ul>
-              ${recette.ingredients.map(ing =>
-                `<li>${ing.nom} : ${ing.quantite} ${ing.unite}</li>`
-              ).join("")}
-            </ul>
-          `;
-          container.append
+    data.recettes.forEach(recette => {
+      const div = document.createElement("div");
+      div.className = "recette";
+      div.innerHTML = `
+        <h2>${recette.nom}</h2>
+        <p><strong>Rendement :</strong> ${recette.rendement} portion(s)</p>
+        <ul>
+          ${recette.ingredients.map(ing =>
+            `<li>${ing.nom} : ${ing.quantite} ${ing.unite}</li>`
+          ).join("")}
+        </ul>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>
