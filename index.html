@@ -56,6 +56,122 @@
   <script>
     // Logic to handle dynamic additions of more PDFs or Devis
   </script>
+  <h2>Créer un devis</h2>
+<div>
+  <label>Nom du devis :</label>
+  <input type="text" id="devisNom" placeholder="Ex : Mariage Buffet">
+  <br>
+  <label>Nombre de personnes :</label>
+  <input type="number" id="devisPersonnes" value="10" min="1">
+  <br><br>
+  <label>Recettes :</label><br>
+  <input type="checkbox" value="Wrap saumon fumé"> Wrap saumon fumé<br>
+  <input type="checkbox" value="Bun's rillettes de thon"> Bun's rillettes de thon<br>
+  <input type="checkbox" value="Brochettes tomates mozza"> Brochettes tomates mozza<br>
+  <input type="checkbox" value="Navettes magret fumé"> Navettes magret fumé<br>
+  <input type="checkbox" value="Tartare saumon avocat"> Tartare saumon avocat<br>
+  <br>
+  <button onclick="creerDevis()">Ajouter le devis</button>
+</div>
+
+<h2>Liste des devis</h2>
+<div id="devisList"></div>
+
+<script>
+  const recettes = {
+    "Wrap saumon fumé": {
+      rendement: 8,
+      ingredients: [
+        { produit: "Grand wrap", quantite: 1, unite: "wrap" },
+        { produit: "Fromage frais", quantite: 20, unite: "g" },
+        { produit: "Saumon fumé", quantite: 2, unite: "tranche" }
+      ]
+    },
+    "Bun's rillettes de thon": {
+      rendement: 25,
+      ingredients: [
+        { produit: "Bun", quantite: 25, unite: "bun" },
+        { produit: "Thon en boîte", quantite: 1, unite: "boîte" },
+        { produit: "Fromage frais", quantite: 250, unite: "g" },
+        { produit: "Coriandre", quantite: 1, unite: "branche" },
+        { produit: "Persil", quantite: 1, unite: "branche" }
+      ]
+    },
+    "Brochettes tomates mozza": {
+      rendement: 1,
+      ingredients: [
+        { produit: "Pic", quantite: 1, unite: "" },
+        { produit: "Tomate cerise", quantite: 1, unite: "" },
+        { produit: "Mozzarella", quantite: 1, unite: "bille" },
+        { produit: "Framboise", quantite: 1, unite: "" }
+      ]
+    },
+    "Navettes magret fumé": {
+      rendement: 1,
+      ingredients: [
+        { produit: "Navette", quantite: 1, unite: "" },
+        { produit: "Fromage frais", quantite: 2, unite: "g" },
+        { produit: "Magret de canard fumé", quantite: 1, unite: "tranche" }
+      ]
+    },
+    "Tartare saumon avocat": {
+      rendement: 1,
+      ingredients: [
+        { produit: "Saumon", quantite: 100, unite: "g" },
+        { produit: "Avocat", quantite: 0.25, unite: "avocat" },
+        { produit: "Coriandre", quantite: 1, unite: "branche" },
+        { produit: "Soja", quantite: 1, unite: "c.à.s" }
+      ]
+    }
+  };
+
+  let devisList = [];
+
+  function creerDevis() {
+    const nom = document.getElementById("devisNom").value;
+    const personnes = parseInt(document.getElementById("devisPersonnes").value);
+    const recettesChoisies = Array.from(document.querySelectorAll("input[type=checkbox]:checked"))
+                                  .map(cb => cb.value);
+
+    let ingredientsTotals = {};
+
+    recettesChoisies.forEach(recetteNom => {
+      const recette = recettes[recetteNom];
+      const ratio = personnes / recette.rendement;
+      
+      recette.ingredients.forEach(ing => {
+        const cle = ing.produit + " (" + ing.unite + ")";
+        if (!ingredientsTotals[cle]) ingredientsTotals[cle] = 0;
+        ingredientsTotals[cle] += ing.quantite * ratio;
+      });
+    });
+
+    devisList.push({ nom, personnes, recettes: recettesChoisies, ingredients: ingredientsTotals });
+    afficherDevis();
+  }
+
+  function afficherDevis() {
+    const container = document.getElementById("devisList");
+    container.innerHTML = "";
+
+    devisList.forEach(devis => {
+      const div = document.createElement("div");
+      div.className = "recette";
+      div.innerHTML = `
+        <h3>${devis.nom} (${devis.personnes} personnes)</h3>
+        <p><strong>Recettes :</strong> ${devis.recettes.join(", ")}</p>
+        <p><strong>Ingrédients nécessaires :</strong></p>
+        <ul>
+          ${Object.entries(devis.ingredients).map(([ing, qte]) =>
+            `<li>${ing} : ${qte.toFixed(2)}</li>`
+          ).join("")}
+        </ul>
+      `;
+      container.appendChild(div);
+    });
+  }
+</script>
+
 </body>
 </html>
 <h2>Devis Disponibles</h2>
