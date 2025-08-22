@@ -76,7 +76,26 @@
 
 <h2>Liste des devis</h2>
 <div id="devisList"></div>
+  <h2>Ajouter une nouvelle recette</h2>
+<div>
+  <label>Nom de la recette :</label>
+  <input type="text" id="newRecetteNom" placeholder="Ex : Verrine crevette avocat"><br>
 
+  <label>Rendement (nb de pièces / personnes couvertes) :</label>
+  <input type="number" id="newRecetteRendement" value="1" min="1"><br><br>
+
+  <h3>Ingrédients</h3>
+  <div id="ingredientsContainer">
+    <div>
+      <input type="text" placeholder="Produit" class="ingProduit">
+      <input type="number" placeholder="Quantité" class="ingQuantite" min="0" step="0.01">
+      <input type="text" placeholder="Unité" class="ingUnite">
+    </div>
+  </div>
+  <button onclick="ajouterIngredient()">+ Ajouter un ingrédient</button><br><br>
+
+  <button onclick="ajouterRecette()">Enregistrer la recette</button>
+</div>
 <script>
   const recettes = {
     "Wrap saumon fumé": {
