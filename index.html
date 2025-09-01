@@ -77,6 +77,56 @@
 <h2>Liste des devis</h2>
 <div id="devisList"></div>
   <h2>Ajouter une nouvelle recette</h2>
+  // Sauvegarde les recettes dans localStorage
+function sauvegarderRecettes() {
+  localStorage.setItem("recettes", JSON.stringify(recettes));
+}
+
+// Charge les recettes depuis localStorage
+function chargerRecettes() {
+  const data = localStorage.getItem("recettes");
+  if (data) {
+    Object.assign(recettes, JSON.parse(data));
+
+    // Ajoute les cases à cocher pour chaque recette existante
+    for (let nom in recettes) {
+      if (!document.querySelector(`input[value="${nom}"]`)) {
+        const checkbox = document.createElement("div");
+        checkbox.innerHTML = `<input type="checkbox" value="${nom}"> ${nom}`;
+        document.querySelector("div").appendChild(checkbox);
+      }
+    }
+  }
+}
+
+// Quand on ajoute une recette, on sauvegarde aussi
+function ajouterRecette() {
+  const nom = document.getElementById("newRecetteNom").value;
+  const rendement = parseFloat(document.getElementById("newRecetteRendement").value);
+  const produits = Array.from(document.querySelectorAll(".ingProduit"));
+  const quantites = Array.from(document.querySelectorAll(".ingQuantite"));
+  const unites = Array.from(document.querySelectorAll(".ingUnite"));
+
+  let ingredients = [];
+  for (let i = 0; i < produits.length; i++) {
+    if (produits[i].value.trim() !== "") {
+      ingredients.push({
+        produit: produits[i].value,
+        quantite: parseFloat(quantites[i].value) || 0,
+        unite: unites[i].value
+      });
+    }
+  }
+
+  recettes[nom] = { rendement, ingredients };
+
+  // Ajout dynamique de la case à cocher
+  const checkbox = document.createElement("div");
+  checkbox.innerHTML = `<input type="checkbox" value="${nom}"> ${nom}`;
+  document.querySelector("div").appendChild(checkbox);
+
+  sauvegarde
+
 <div>
   <label>Nom de la recette :</label>
   <input type="text" id="newRecetteNom" placeholder="Ex : Verrine crevette avocat"><br>
